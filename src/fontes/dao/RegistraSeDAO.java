@@ -67,5 +67,38 @@ public class RegistraSeDAO {
 		
 		return incluiu;
 	}
+	
+	/**
+	 * Autenticar usuário no sistema
+	 * @author 38014335104
+	 * @see Data: 02/08/2013 as 13hs55min
+	 * **/
+	public boolean autenticarClienteNoSistema(final String email, final String senha)throws SQLException{
+		conn = null;
+		 stm = null;
+		  rs = null;
+		boolean validou = false;
+		try{			
+			conn = Conexao.getConexao();
+			 stm = conn.prepareStatement(ConstantesRegistrarClienteDAO.getAUTENTICAR_CLIENTE_NO_SISTEMA().toString());
+			 stm.setString(1, email);
+			 stm.setString(2, senha);
+			  rs = stm.executeQuery();
+			  
+			if (rs.next()){
+				if(rs.getInt("total") >= 1)
+					validou = true;
+			}  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			
+			throw new SQLException(e.getLocalizedMessage(), e);
+			
+		}finally{
+			Conexao.fecharConexao(stm, rs, conn);
+		}
+		return validou;
+	}
 
 }

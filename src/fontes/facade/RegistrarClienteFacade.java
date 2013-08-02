@@ -4,6 +4,7 @@
 package fontes.facade;
 
 import java.sql.Date;
+import java.sql.SQLException;
 
 import fontes.dao.EnqueteDAO;
 import fontes.dao.FaleconoscoDAO;
@@ -13,6 +14,8 @@ import fontes.entity.Cliente;
 import fontes.entity.Enquete;
 import fontes.entity.FaleConosco;
 import fontes.entity.Orcamento;
+import fontes.vo.RetornoJavaVO;
+
 import java.text.SimpleDateFormat;
 
 /**
@@ -46,12 +49,19 @@ public class RegistrarClienteFacade{
 	 * @author 38014335104
 	 * @see Data: 30/07/2013 as 13hs04
 	 * **/
-	public String autenticarUsuario(String email, String senha){//alterar o retorno para objeto usuário, antes criar o objeto usuário no flex *.as
-		//-- passar os dados recebidos para o banco de dados e realizar a autenticação do usuário no sistema --//
+	public RetornoJavaVO autenticarUsuario(String email, String senha){
+		RegistraSeDAO dao = new RegistraSeDAO();
 		
-		//-- abrir a tela principal do sistema --//
-		
-		return "Atenção! Os dados informados do cliente são:\nE-mail: ("+email+").\nSenha: ("+senha+").";
+		RetornoJavaVO vo = new RetornoJavaVO();
+				
+		try {
+			vo.retorno = new Boolean(dao.autenticarClienteNoSistema(email, senha)).toString();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return vo;
 	}
 	
 	/**
